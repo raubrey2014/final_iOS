@@ -16,7 +16,7 @@ class CreateEventController: UIViewController {
     @IBOutlet weak var addressField: UITextField!
     @IBOutlet weak var cityField: UITextField!
     @IBOutlet weak var stateField: UITextField!
-    
+    @IBOutlet weak var dateField: UIDatePicker!
     @IBOutlet weak var createButton: UIButton!
     
     
@@ -90,8 +90,14 @@ class CreateEventController: UIViewController {
                     
                     //**********************************************************************************************
                     //CREATE EVENT ENTRY WITH GPS INFORMATION
+                    //Send Event name, longitude, latitude, date time
+                    let dateFormatter = NSDateFormatter()
+                    dateFormatter.dateFormat = "dd-MM-YYYY:hh:mm"
+                    let dateValue = self.dateField.date
+                    let dateString = dateFormatter.stringFromDate(dateValue)
                     var databaseGet = "http://plato.cs.virginia.edu/~rma7qb/flightservice/gps/"
                     databaseGet += "\(self.nameField.text!)/"
+                    databaseGet += "\(dateString)/"
                     databaseGet += "\(self.mLatitude)/"
                     databaseGet += "\(self.mLongitude)"
                     print(databaseGet)
@@ -117,27 +123,6 @@ class CreateEventController: UIViewController {
                             print("error using POST for our web service!!!\n")
                             print(error)
                             return
-                        }
-                        
-                        // parse the result as JSON, since that's what the API provides
-                        let post: NSDictionary
-                        do {
-                            post = try NSJSONSerialization.JSONObjectWithData(responseData,
-                                options: []) as! NSDictionary
-                        } catch  {
-                            print("error trying to convert data to JSON")
-                            return
-                        }
-                        
-                        let json = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-                        if let result = json["results"] as? NSArray {
-                            if let geometry = result[0]["geometry"] as? NSDictionary {
-                                let latitude = geometry["location"]!["lat"] as! Double
-                                let longitude = geometry["location"]!["lng"] as! Double
-                                print("\n************latitude: \(latitude)")
-                                print("************longitude: \(longitude)")
-                                
-                            }
                         }
                         
                     })

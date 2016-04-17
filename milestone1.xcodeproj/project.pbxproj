@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7377DF591CC323B6002C69D6 /* CreateEventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7377DF581CC323B6002C69D6 /* CreateEventController.swift */; };
+		7377DF5F1CC3D254002C69D6 /* milestone2.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7377DF5D1CC3D254002C69D6 /* milestone2.xcdatamodeld */; };
 		73BAD7051CB1EB56001D6213 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BAD7041CB1EB56001D6213 /* AppDelegate.swift */; };
 		73BAD7071CB1EB56001D6213 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BAD7061CB1EB56001D6213 /* ViewController.swift */; };
 		73BAD70A1CB1EB56001D6213 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73BAD7081CB1EB56001D6213 /* Main.storyboard */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		7377DF581CC323B6002C69D6 /* CreateEventController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateEventController.swift; sourceTree = "<group>"; };
+		7377DF5E1CC3D254002C69D6 /* milestone2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = milestone2.xcdatamodel; sourceTree = "<group>"; };
 		73BAD7011CB1EB56001D6213 /* milestone1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = milestone1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		73BAD7041CB1EB56001D6213 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		73BAD7061CB1EB56001D6213 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				73BAD70D1CB1EB56001D6213 /* LaunchScreen.storyboard */,
 				73BAD7101CB1EB56001D6213 /* Info.plist */,
 				7377DF581CC323B6002C69D6 /* CreateEventController.swift */,
+				7377DF5D1CC3D254002C69D6 /* milestone2.xcdatamodeld */,
 			);
 			path = milestone1;
 			sourceTree = "<group>";
@@ -265,6 +268,7 @@
 				73BAD7071CB1EB56001D6213 /* ViewController.swift in Sources */,
 				7377DF591CC323B6002C69D6 /* CreateEventController.swift in Sources */,
 				73BAD7051CB1EB56001D6213 /* AppDelegate.swift in Sources */,
+				7377DF5F1CC3D254002C69D6 /* milestone2.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -512,6 +516,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		7377DF5D1CC3D254002C69D6 /* milestone2.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				7377DF5E1CC3D254002C69D6 /* milestone2.xcdatamodel */,
+			);
+			currentVersion = 7377DF5E1CC3D254002C69D6 /* milestone2.xcdatamodel */;
+			path = milestone2.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 73BAD6F91CB1EB56001D6213 /* Project object */;
 }

@@ -129,6 +129,7 @@
                         <outlet property="addressField" destination="5qN-UM-7Zr" id="1jg-5a-O2C"/>
                         <outlet property="cityField" destination="X6A-b2-CIM" id="f7s-5y-Bpt"/>
                         <outlet property="createButton" destination="y9K-4b-b6y" id="rXL-Vj-jhp"/>
+                        <outlet property="dateField" destination="JLt-nf-A3Q" id="kDO-Gt-eNQ"/>
                         <outlet property="nameField" destination="Tk3-T5-38z" id="3pc-6S-1ph"/>
                         <outlet property="stateField" destination="jNf-eA-oCr" id="Psd-Ua-TwC"/>
                     </connections>
