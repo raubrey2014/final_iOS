@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0297703B1CC41D65007AED05 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0297703A1CC41D65007AED05 /* DetailViewController.swift */; };
 		7377DF591CC323B6002C69D6 /* CreateEventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7377DF581CC323B6002C69D6 /* CreateEventController.swift */; };
 		7377DF5F1CC3D254002C69D6 /* milestone2.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7377DF5D1CC3D254002C69D6 /* milestone2.xcdatamodeld */; };
 		7377DF631CC3EE94002C69D6 /* EventTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7377DF621CC3EE94002C69D6 /* EventTableController.swift */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0297703A1CC41D65007AED05 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		7377DF581CC323B6002C69D6 /* CreateEventController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateEventController.swift; sourceTree = "<group>"; };
 		7377DF5E1CC3D254002C69D6 /* milestone2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = milestone2.xcdatamodel; sourceTree = "<group>"; };
 		7377DF621CC3EE94002C69D6 /* EventTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTableController.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				73BAD7041CB1EB56001D6213 /* AppDelegate.swift */,
 				73BAD7061CB1EB56001D6213 /* ViewController.swift */,
 				73BAD7081CB1EB56001D6213 /* Main.storyboard */,
+				0297703A1CC41D65007AED05 /* DetailViewController.swift */,
 				73BAD70B1CB1EB56001D6213 /* Assets.xcassets */,
 				73BAD70D1CB1EB56001D6213 /* LaunchScreen.storyboard */,
 				73BAD7101CB1EB56001D6213 /* Info.plist */,
@@ -271,6 +274,7 @@
 				73BAD7071CB1EB56001D6213 /* ViewController.swift in Sources */,
 				7377DF631CC3EE94002C69D6 /* EventTableController.swift in Sources */,
 				7377DF591CC323B6002C69D6 /* CreateEventController.swift in Sources */,
+				0297703B1CC41D65007AED05 /* DetailViewController.swift in Sources */,
 				73BAD7051CB1EB56001D6213 /* AppDelegate.swift in Sources */,
 				7377DF5F1CC3D254002C69D6 /* milestone2.xcdatamodeld in Sources */,
 			);

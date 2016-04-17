@@ -90,6 +90,30 @@ class EventTableController: UITableViewController {
             return cell!
     }
     
+    //Events
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath:NSIndexPath){
+        print("Here is didselectrowatindexpath..\(indexPath.row)")
+        
+        performSegueWithIdentifier("DetailViewSegue", sender: indexPath.row)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "DetailViewSegue"{
+            print("preparing for detail segue")
+            if let destinationVC = segue.destinationViewController as? DetailViewController{
+                if let senderInt = sender as? Int{
+                    destinationVC.index = senderInt
+//                    reminderManager.currentlyEditing = senderInt
+                    print("sender Int = \(senderInt)")
+                }
+                
+            }
+            
+            
+            
+        }
+    }
+    
     @IBAction func reload(sender: AnyObject) {
         
         print("Attempting reload on eventTableView..")
