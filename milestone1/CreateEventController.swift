@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class CreateEventController: UIViewController {
+class CreateEventController: UIViewController, UITextFieldDelegate {
     
     //MARK: UI ELEMENTS
     @IBOutlet weak var nameField: UITextField!
@@ -20,6 +20,8 @@ class CreateEventController: UIViewController {
     @IBOutlet weak var createButton: UIButton!
     
     
+    
+    
     //MARK: GLOBALS
     var mLongitude: Double = 0.0
     var mLatitude: Double = 0.0
@@ -28,8 +30,30 @@ class CreateEventController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "textChanged:", name: UITextFieldTextDidChangeNotification, object: nil)
+        createButton.enabled = false
     }
     
+    //Disable create button
+    func textChanged(sender: NSNotification) {
+        if nameField.hasText() && cityField.hasText() && stateField.hasText(){
+            createButton.enabled = true
+        }
+        else {
+            createButton.enabled = false
+        }
+    }
+    
+    //MARK: UITextFieldDelegate
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        //hide keyboard
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        self.view.endEditing(true)
+    }
     
     //MARK: ACTIONS
     @IBAction func createEvent(sender: AnyObject) {
@@ -135,7 +159,7 @@ class CreateEventController: UIViewController {
                         print("Event_name: ", self.nameField.text!)
                         print("Lat: ", self.mLatitude)
                         print("Long: ", self.mLongitude)
-                        self.saveEvent(attempt!, event_name: self.nameField.text!, event_date: self.dateField.date, event_lat: self.mLatitude, event_long: self.mLongitude)
+                        self.saveEvent(self.events.count, event_id: attempt!, event_name: self.nameField.text!, event_date: self.dateField.date, event_lat: self.mLatitude, event_long: self.mLongitude)
 
 
                     })
@@ -151,7 +175,7 @@ class CreateEventController: UIViewController {
 
     }
     
-    func saveEvent(event_id: Int, event_name: String, event_date: NSDate, event_lat: Double, event_long: Double) {
+    func saveEvent(local_id:Int, event_id: Int, event_name: String, event_date: NSDate, event_lat: Double, event_long: Double) {
         //1 get AppDelegate and ManagedObjectContext
         let appDelegate =
         UIApplication.sharedApplication().delegate as! AppDelegate
@@ -166,6 +190,7 @@ class CreateEventController: UIViewController {
             insertIntoManagedObjectContext: managedContext)
         
         //3 Set attribute
+        your_event.setValue(local_id, forKey:"local_id")
         your_event.setValue(event_id, forKey: "event_id")
         your_event.setValue(event_name, forKey: "event_name")
         your_event.setValue(event_date, forKey: "date_time")
