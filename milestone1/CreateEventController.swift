@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import CoreData
 
 class CreateEventController: UIViewController {
     
@@ -21,8 +21,9 @@ class CreateEventController: UIViewController {
     
     
     //MARK: GLOBALS
-    var mLongitude = 0.0
-    var mLatitude = 0.0
+    var mLongitude: Double = 0.0
+    var mLatitude: Double = 0.0
+    var events = [NSManagedObject]()
     
     
     override func viewDidLoad() {
@@ -43,8 +44,8 @@ class CreateEventController: UIViewController {
         
         
         //TRYING GET
-        let postsUrlRequest = NSMutableURLRequest(URL: NSURL(string: googleGet)!)
-        postsUrlRequest.HTTPMethod = "GET"
+//        let postsUrlRequest = NSMutableURLRequest(URL: NSURL(string: googleGet)!)
+//        postsUrlRequest.HTTPMethod = "GET"
         
         guard let url = NSURL(string: googleGet) else {
             print("Error: cannot create URL")
@@ -95,17 +96,20 @@ class CreateEventController: UIViewController {
                     dateFormatter.dateFormat = "dd-MM-YYYY:hh:mm"
                     let dateValue = self.dateField.date
                     let dateString = dateFormatter.stringFromDate(dateValue)
+                    
                     var databaseGet = "http://plato.cs.virginia.edu/~rma7qb/flightservice/gps/"
                     databaseGet += "\(self.nameField.text!)/"
                     databaseGet += "\(dateString)/"
                     databaseGet += "\(self.mLatitude)/"
                     databaseGet += "\(self.mLongitude)"
                     print(databaseGet)
-                    //TRYING GET
-                    let postsUrlRequest2 = NSMutableURLRequest(URL: NSURL(string: databaseGet)!)
-                    postsUrlRequest2.HTTPMethod = "GET"
                     
-                    guard let url2 = NSURL(string: databaseGet) else {
+                    //Replaces spaces and unacceptable characters for web request
+                    let databaseGet2:String = databaseGet.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+                    print(databaseGet2)
+
+                    //TRYING GET
+                    guard let url2 = NSURL(string: databaseGet2) else {
                         print("Error: cannot create URL")
                         return
                     }
@@ -124,7 +128,16 @@ class CreateEventController: UIViewController {
                             print(error)
                             return
                         }
-                        
+                        let dataString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                        print(dataString)
+                        let attempt = Int(dataString! as String)
+                        print("Event_id: ", attempt)
+                        print("Event_name: ", self.nameField.text!)
+                        print("Lat: ", self.mLatitude)
+                        print("Long: ", self.mLongitude)
+                        self.saveEvent(attempt!, event_name: self.nameField.text!, event_date: self.dateField.date, event_lat: self.mLatitude, event_long: self.mLongitude)
+
+
                     })
                     task2.resume()
                     //##############################################################################################
@@ -132,6 +145,42 @@ class CreateEventController: UIViewController {
             }
             
         })
+
         task.resume()
+        
+
+    }
+    
+    func saveEvent(event_id: Int, event_name: String, event_date: NSDate, event_lat: Double, event_long: Double) {
+        //1 get AppDelegate and ManagedObjectContext
+        let appDelegate =
+        UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        let managedContext = appDelegate.managedObjectContext
+        
+        //2 Find the relevant entity
+        let entity =  NSEntityDescription.entityForName("Your_events",
+            inManagedObjectContext:managedContext)
+        
+        let your_event = NSManagedObject(entity: entity!,
+            insertIntoManagedObjectContext: managedContext)
+        
+        //3 Set attribute
+        your_event.setValue(event_id, forKey: "event_id")
+        your_event.setValue(event_name, forKey: "event_name")
+        your_event.setValue(event_date, forKey: "date_time")
+        your_event.setValue(event_lat, forKey: "lat")
+        your_event.setValue(event_long, forKey: "long")
+        
+        
+        //4 Save query
+        do {
+            try managedContext.save()
+            //5
+            events.append(your_event)
+
+        } catch let error as NSError  {
+            print("Could not save \(error), \(error.userInfo)")
+        }
     }
 }

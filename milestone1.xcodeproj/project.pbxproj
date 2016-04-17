@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7377DF591CC323B6002C69D6 /* CreateEventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7377DF581CC323B6002C69D6 /* CreateEventController.swift */; };
 		7377DF5F1CC3D254002C69D6 /* milestone2.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7377DF5D1CC3D254002C69D6 /* milestone2.xcdatamodeld */; };
+		7377DF631CC3EE94002C69D6 /* EventTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7377DF621CC3EE94002C69D6 /* EventTableController.swift */; };
 		73BAD7051CB1EB56001D6213 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BAD7041CB1EB56001D6213 /* AppDelegate.swift */; };
 		73BAD7071CB1EB56001D6213 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BAD7061CB1EB56001D6213 /* ViewController.swift */; };
 		73BAD70A1CB1EB56001D6213 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73BAD7081CB1EB56001D6213 /* Main.storyboard */; };
@@ -38,6 +39,7 @@
 /* Begin PBXFileReference section */
 		7377DF581CC323B6002C69D6 /* CreateEventController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateEventController.swift; sourceTree = "<group>"; };
 		7377DF5E1CC3D254002C69D6 /* milestone2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = milestone2.xcdatamodel; sourceTree = "<group>"; };
+		7377DF621CC3EE94002C69D6 /* EventTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTableController.swift; sourceTree = "<group>"; };
 		73BAD7011CB1EB56001D6213 /* milestone1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = milestone1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		73BAD7041CB1EB56001D6213 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		73BAD7061CB1EB56001D6213 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				73BAD7101CB1EB56001D6213 /* Info.plist */,
 				7377DF581CC323B6002C69D6 /* CreateEventController.swift */,
 				7377DF5D1CC3D254002C69D6 /* milestone2.xcdatamodeld */,
+				7377DF621CC3EE94002C69D6 /* EventTableController.swift */,
 			);
 			path = milestone1;
 			sourceTree = "<group>";
@@ -266,6 +269,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				73BAD7071CB1EB56001D6213 /* ViewController.swift in Sources */,
+				7377DF631CC3EE94002C69D6 /* EventTableController.swift in Sources */,
 				7377DF591CC323B6002C69D6 /* CreateEventController.swift in Sources */,
 				73BAD7051CB1EB56001D6213 /* AppDelegate.swift in Sources */,
 				7377DF5F1CC3D254002C69D6 /* milestone2.xcdatamodeld in Sources */,
