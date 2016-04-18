@@ -32,6 +32,7 @@ class CreateEventController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "textChanged:", name: UITextFieldTextDidChangeNotification, object: nil)
         createButton.enabled = false
+        dateField.minimumDate = NSDate()
     }
     
     //Disable create button
@@ -160,7 +161,10 @@ class CreateEventController: UIViewController, UITextFieldDelegate {
                         print("Lat: ", self.mLatitude)
                         print("Long: ", self.mLongitude)
                         self.saveEvent(self.events.count, event_id: attempt!, event_name: self.nameField.text!, event_date: self.dateField.date, event_lat: self.mLatitude, event_long: self.mLongitude)
-
+                        dispatch_async(dispatch_get_main_queue()) {
+                            // update some UI
+                            self.navigationController?.popViewControllerAnimated(true)
+                        }
 
                     })
                     task2.resume()

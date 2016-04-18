@@ -12,10 +12,11 @@ import CoreData
 class SpecialDetailController: UIViewController {
     
     var index:Int = 0
+    var foreignIndex:Int = 0
     var cityField: String = ""
     var stateField: String = ""
     var events = [NSManagedObject]()
-    
+    var tempDate = NSDate()
     @IBOutlet weak var eventNameField: UILabel!
     
     @IBOutlet weak var eventDateTimeField: UILabel!
@@ -35,10 +36,13 @@ class SpecialDetailController: UIViewController {
         if segue.identifier == "EditSegue"{
             print("preparing for edit segue")
             if let destinationVC = segue.destinationViewController as? EditViewController{
+                destinationVC.index = self.index
+                destinationVC.foreignIndex = self.foreignIndex
                 destinationVC.eventName = eventNameField.text!
                 destinationVC.address = eventAddress1.text!
                 destinationVC.city = self.cityField
                 destinationVC.state = self.stateField
+                destinationVC.dateTime = self.tempDate
             }
             
             
@@ -81,6 +85,10 @@ class SpecialDetailController: UIViewController {
             dateFormatter.dateFormat = "MMM dd, YYYY hh:mm a"
             let dateString = dateFormatter.stringFromDate(dateTime)
             eventDateTimeField.text = dateString
+            self.tempDate = dateTime
+            
+            //Setting the local var foreignIndex to the event_id so it can be passed through segue
+            self.foreignIndex = currentEvent.valueForKey("event_id") as! Int
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
         }
@@ -149,6 +157,7 @@ class SpecialDetailController: UIViewController {
                     //                    self.addressLabel.text = "\(number) \(street), \(city), \(state) \(zip)"
                     self.cityField = "\(city)"
                     self.stateField = "\(state)"
+                    
                     tempAddress = "\(number) \(street)"
                     tempAddress2 = "\(city), \(state) \(zip)"
                     

@@ -59,6 +59,7 @@ class EventTableController: UITableViewController {
             try managedContext.executeFetchRequest(fetchRequest)
             events = results as! [NSManagedObject]
             eventTableView.reloadData()
+            
 
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
