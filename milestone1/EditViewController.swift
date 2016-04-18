@@ -218,9 +218,6 @@ class EditViewController: UIViewController {
         events = results as! [NSManagedObject]
         let eventUpdate = events[self.index]
 
-        eventUpdate.setValue(editNameField.text, forKey: "event_name")
-        eventUpdate.setValue(dateTime, forKey: "date_time")
-        
         eventUpdate.setValue(local_id, forKey:"local_id")
         eventUpdate.setValue(event_id, forKey: "event_id")
         eventUpdate.setValue(event_name, forKey: "event_name")
@@ -238,12 +235,6 @@ class EditViewController: UIViewController {
             print("Could not save \(error), \(error.userInfo)")
 
         }
-        
-        //3 Set attribute
-        
-        
-        //4 Save query
-        
     }
 
 }
