@@ -94,13 +94,13 @@ class EventTableController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath:NSIndexPath){
         print("Here is didselectrowatindexpath..\(indexPath.row)")
         
-        performSegueWithIdentifier("DetailViewSegue", sender: indexPath.row)
+        performSegueWithIdentifier("SecondDetailViewController", sender: indexPath.row)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "DetailViewSegue"{
+        if segue.identifier == "SecondDetailViewController"{
             print("preparing for detail segue")
-            if let destinationVC = segue.destinationViewController as? DetailViewController{
+            if let destinationVC = segue.destinationViewController as? SpecialDetailController{
                 if let senderInt = sender as? Int{
                     destinationVC.index = senderInt
 //                    reminderManager.currentlyEditing = senderInt
