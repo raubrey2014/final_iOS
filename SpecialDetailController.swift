@@ -12,7 +12,8 @@ import CoreData
 class SpecialDetailController: UIViewController {
     
     var index:Int = 0
-    
+    var cityField: String = ""
+    var stateField: String = ""
     var events = [NSManagedObject]()
     
     @IBOutlet weak var eventNameField: UILabel!
@@ -28,6 +29,23 @@ class SpecialDetailController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "EditSegue"{
+            print("preparing for edit segue")
+            if let destinationVC = segue.destinationViewController as? EditViewController{
+                destinationVC.eventName = eventNameField.text!
+                destinationVC.address = eventAddress1.text!
+                destinationVC.city = self.cityField
+                destinationVC.state = self.stateField
+            }
+            
+            
+            
+        }
+    }
+    
     
     //MARK: FETCH
     override func viewWillAppear(animated: Bool) {
@@ -132,8 +150,11 @@ class SpecialDetailController: UIViewController {
                     let zip = address[6]["short_name"] as! String
                     print("\n\(number) \(street), \(city), \(state) \(zip)")
                     //                    self.addressLabel.text = "\(number) \(street), \(city), \(state) \(zip)"
+                    self.cityField = "\(city)"
+                    self.stateField = "\(state)"
                     tempAddress = "\(number) \(street)"
                     tempAddress2 = "\(city), \(state) \(zip)"
+                    
                     dispatch_async(dispatch_get_main_queue(), {
                         self.eventAddress1.text = tempAddress
                         self.eventAddress2.text = tempAddress2
