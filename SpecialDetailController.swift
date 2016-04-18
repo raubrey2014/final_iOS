@@ -63,10 +63,6 @@ class SpecialDetailController: UIViewController {
             dateFormatter.dateFormat = "MMM dd, YYYY hh:mm a"
             let dateString = dateFormatter.stringFromDate(dateTime)
             eventDateTimeField.text = dateString
-            
-            
-//            eventDateTimeField.text = currentEvent.valueForKey("date_time") as! NSTaggedDate
-        
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
         }
@@ -124,6 +120,7 @@ class SpecialDetailController: UIViewController {
             //
             let json = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
             if let result = json["results"] as? NSArray {
+                print(result)
                 if let address = result[0]["address_components"] as? NSArray {
                     let number = address[0]["short_name"] as! String
                     let street = address[1]["short_name"] as! String

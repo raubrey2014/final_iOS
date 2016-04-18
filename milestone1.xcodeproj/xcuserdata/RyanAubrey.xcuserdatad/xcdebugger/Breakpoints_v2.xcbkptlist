@@ -81,53 +81,38 @@
             endingLineNumber = "65"
             landmarkName = "viewWillAppear(_:)"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "milestone1.SpecialDetailController.viewWillAppear (milestone1.SpecialDetailController)(Swift.Bool) -&gt; ()"
-                  moduleName = "milestone1"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/RyanAubrey/Documents/milestone2/SpecialDetailController.swift"
-                  timestampString = "482619629.095692"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "52"
-                  endingLineNumber = "52"
-                  offsetFromSymbolStart = "1481">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "milestone1.SpecialDetailController.viewWillAppear (milestone1.SpecialDetailController)(Swift.Bool) -&gt; ()"
-                  moduleName = "milestone1"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/RyanAubrey/Documents/milestone2/SpecialDetailController.swift"
-                  timestampString = "482619629.096099"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "52"
-                  endingLineNumber = "52"
-                  offsetFromSymbolStart = "1493">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "milestone1.SpecialDetailController.viewWillAppear (milestone1.SpecialDetailController)(Swift.Bool) -&gt; ()"
-                  moduleName = "milestone1"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/RyanAubrey/Documents/milestone2/SpecialDetailController.swift"
-                  timestampString = "482619629.096309"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "52"
-                  endingLineNumber = "52"
-                  offsetFromSymbolStart = "2266">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SpecialDetailController.swift"
+            timestampString = "482633296.060697"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "viewWillAppear(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SpecialDetailController.swift"
+            timestampString = "482633297.910625"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "viewWillAppear(_:)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
