@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class EditViewController: UIViewController {
+class EditViewController: UIViewController, UITextFieldDelegate {
     
     var index:Int = 0
     var foreignIndex:Int = 0
@@ -57,6 +57,18 @@ class EditViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    //MARK: UITextFieldDelegate
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        //hide keyboard
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        self.view.endEditing(true)
     }
     
     
@@ -224,6 +236,7 @@ class EditViewController: UIViewController {
         eventUpdate.setValue(event_date, forKey: "date_time")
         eventUpdate.setValue(event_lat, forKey: "lat")
         eventUpdate.setValue(event_long, forKey: "long")
+            
             do {
                 try eventUpdate.managedObjectContext?.save()
                 //5

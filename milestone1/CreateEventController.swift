@@ -200,7 +200,7 @@ class CreateEventController: UIViewController, UITextFieldDelegate {
         your_event.setValue(event_date, forKey: "date_time")
         your_event.setValue(event_lat, forKey: "lat")
         your_event.setValue(event_long, forKey: "long")
-        
+        your_event.setValue(false, forKey: "attended")
         
         //4 Save query
         do {

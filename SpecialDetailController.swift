@@ -8,8 +8,9 @@
 
 import UIKit
 import CoreData
+import CoreLocation
 
-class SpecialDetailController: UIViewController {
+class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
     
     var index:Int = 0
     var foreignIndex:Int = 0
@@ -25,10 +26,23 @@ class SpecialDetailController: UIViewController {
     
     @IBOutlet weak var eventAddress2: UILabel!
     
+    @IBOutlet weak var attendButtonField: UIButton!
+    
+    @IBOutlet weak var successLabel: UILabel!
+    
+    
+    
+    //MARK: FIELDS FOR GPS
+    var mLatitude: CLLocationDegrees = CLLocationDegrees()
+    var mLongitude: CLLocationDegrees = CLLocationDegrees()
+    
+    var locationManager: CLLocationManager?
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.successLabel.text = ""
     }
     
     
@@ -69,17 +83,37 @@ class SpecialDetailController: UIViewController {
         
         //3
         do {
+            //GET RESULT
             let results = try managedContext.executeFetchRequest(fetchRequest)
             events = results as! [NSManagedObject]
-            print(events[index])
+//            print(events[index])
             let currentEvent = events[index]
             print(currentEvent.valueForKey("event_id")!)
+            
+            //CHECK IF ATTENDED
+            if (currentEvent.valueForKey("attended")) != nil{
+                print("value for key is not nil")
+                if let b = currentEvent.valueForKey("attended") as? Bool {
+                    print("b as? Bool is valid")
+                    if b == true {
+                        successLabel.text = "You have attended!"
+                        successLabel.textColor = UIColor.greenColor()
+                        attendButtonField.enabled = false
+                        self.navigationItem.setRightBarButtonItem(UIBarButtonItem(title:"", style:.Plain, target:nil, action:nil), animated: true)
+                    }
+                    else{
+                        print(b)
+                    }
+                }
+                
+            }
+            //ELSE
             eventNameField.text = currentEvent.valueForKey("event_name") as! String
             let dateTime = currentEvent.valueForKey("date_time") as! NSDate
             
             tempLat = currentEvent.valueForKey("lat") as! Double
             tempLong = currentEvent.valueForKey("long") as! Double
-
+            
             
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "MMM dd, YYYY hh:mm a"
@@ -89,6 +123,7 @@ class SpecialDetailController: UIViewController {
             
             //Setting the local var foreignIndex to the event_id so it can be passed through segue
             self.foreignIndex = currentEvent.valueForKey("event_id") as! Int
+            
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
         }
@@ -146,7 +181,7 @@ class SpecialDetailController: UIViewController {
             //
             let json = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
             if let result = json["results"] as? NSArray {
-                print(result)
+//                print(result)
                 if let address = result[0]["address_components"] as? NSArray {
                     let number = address[0]["short_name"] as! String
                     let street = address[1]["short_name"] as! String
@@ -172,6 +207,214 @@ class SpecialDetailController: UIViewController {
             
         })
         task.resume()
+    }
+    
+    
+    
+    
+    
+    //### LOCATION MANAGER###
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if locations.count == 0{
+            //handle error here
+            return
+        }
+        
+        let newLocation = locations[0]
+        
+        
+        mLongitude = newLocation.coordinate.longitude
+        mLatitude = newLocation.coordinate.latitude
+       
+        
+    }
+    
+    func locationManager(manager: CLLocationManager,
+                         didFailWithError error: NSError){
+        print("Location manager failed with error = \(error)")
+    }
+    
+    func locationManager(manager: CLLocationManager,
+                         didChangeAuthorizationStatus status: CLAuthorizationStatus){
+        
+        print("The authorization status of location services is changed to: ", terminator: "")
+        
+        switch CLLocationManager.authorizationStatus(){
+        case .AuthorizedAlways:
+            print("Authorized")
+        case .AuthorizedWhenInUse:
+            print("Authorized when in use")
+        case .Denied:
+            print("Denied")
+        case .NotDetermined:
+            print("Not determined")
+        case .Restricted:
+            print("Restricted")
+        }
+        
+    }
+    
+    func displayAlertWithTitle(title: String, message: String){
+        let controller = UIAlertController(title: title,
+                                           message: message,
+                                           preferredStyle: .Alert)
+        
+        controller.addAction(UIAlertAction(title: "OK",
+            style: .Default,
+            handler: nil))
+        
+        presentViewController(controller, animated: true, completion: nil)
+        
+    }
+    
+    func createLocationManager(startImmediately startImmediately: Bool){
+        locationManager = CLLocationManager()
+        if let manager = locationManager{
+            print("Successfully created the location manager")
+            manager.delegate = self
+            if startImmediately{
+                manager.startUpdatingLocation()
+                
+                
+            }
+        }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        /* Are location services available on this device? */
+        if CLLocationManager.locationServicesEnabled(){
+            
+            /* Do we have authorization to access location services? */
+            switch CLLocationManager.authorizationStatus(){
+            case .AuthorizedAlways:
+                /* Yes, always */
+                createLocationManager(startImmediately: true)
+            case .AuthorizedWhenInUse:
+                /* Yes, only when our app is in use */
+                createLocationManager(startImmediately: true)
+            case .Denied:
+                /* No */
+                displayAlertWithTitle("Not Determined",
+                                      message: "Location services are not allowed for this app")
+            case .NotDetermined:
+                /* We don't know yet, we have to ask */
+                createLocationManager(startImmediately: false)
+                if let manager = self.locationManager{
+                    manager.requestWhenInUseAuthorization()
+                }
+                displayAlertWithTitle("Not determined", message: "Location services are undetermined for this app")
+            case .Restricted:
+                /* Restrictions have been applied, we have no access
+                 to location services */
+                displayAlertWithTitle("Restricted",
+                                      message: "Location services are not allowed for this app")
+            }
+            
+            
+        } else {
+            /* Location services are not enabled.
+             Take appropriate action: for instance, prompt the
+             user to enable the location services */
+            print("Location services are not enabled")
+        }
+    }
+    
+    @IBAction func checkRadius(sender: AnyObject) {
+        self.attendButtonField.enabled = false
+        self.eventNameField.tintColor = UIColor.greenColor()
+        
+        var databaseGet = "http://plato.cs.virginia.edu/~rma7qb/flightservice/checkRadius/"
+        databaseGet += "\(self.foreignIndex)/"
+        databaseGet += "\(self.mLatitude)/"
+        databaseGet += "\(self.mLongitude)"
+//        print(databaseGet)
+        
+        //Replaces spaces and unacceptable characters for web request
+        let databaseGet2:String = databaseGet.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+//        print(databaseGet2)
+        
+        //TRYING GET
+        guard let url2 = NSURL(string: databaseGet2) else {
+            print("Error: cannot create URL")
+            return
+        }
+        let urlRequest2 = NSURLRequest(URL: url2)
+        let config2 = NSURLSessionConfiguration.defaultSessionConfiguration()
+        let session2 = NSURLSession(configuration: config2)
+        
+        let task2 = session2.dataTaskWithRequest(urlRequest2, completionHandler: { (data, response, error) in
+            // do stuff with response, data & error here
+            guard let responseData = data else {
+                print("Error: did not receive data")
+                return
+            }
+            guard error == nil else {
+                print("error using POST for our web service!!!\n")
+                print(error)
+                return
+            }
+            let dataString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            print(dataString!)
+            if dataString! == "success" {
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.successLabel.text = "You have attended!"
+                    self.successLabel.textColor = UIColor.greenColor()
+                    
+                    self.updateEvent()
+                }
+            }
+            else {
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.successLabel.text = "You are not in range!"
+                    self.successLabel.textColor = UIColor.redColor()
+                    self.attendButtonField.enabled = true
+                    
+                }
+            }
+//            self.saveEvent(self.events.count, event_id: attempt!, event_name: self.nameField.text!, event_date: self.dateField.date, event_lat: self.mLatitude, event_long: self.mLongitude)
+//            dispatch_async(dispatch_get_main_queue()) {
+//                // update some UI
+//                self.navigationController?.popViewControllerAnimated(true)
+//            }
+            
+        })
+        task2.resume()
+    }
+    
+    func updateEvent() {
+        //Edit values in Core Data
+        print("in updateEvent")
+        //1
+        let appDelegate =
+            UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        let managedContext = appDelegate.managedObjectContext
+        
+        //2
+        let fetchRequest = NSFetchRequest(entityName: "Your_events")
+        
+        //3
+        
+        do {
+            let results = try managedContext.executeFetchRequest(fetchRequest)
+            events = results as! [NSManagedObject]
+            let eventUpdate = events[self.index]
+            
+            eventUpdate.setValue(true, forKey:"attended")
+            
+            do {
+                try eventUpdate.managedObjectContext?.save()
+                //5
+                
+            } catch let error as NSError  {
+                print("Could not save \(error), \(error.userInfo)")
+            }
+        } catch let error as NSError {
+            print("Could not save \(error), \(error.userInfo)")
+            
+        }
     }
     
 }
