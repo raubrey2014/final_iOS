@@ -11,6 +11,7 @@ import CoreData
 
 class EditViewController: UIViewController, UITextFieldDelegate {
     
+    var user_id:Int = 0
     var index:Int = 0
     var foreignIndex:Int = 0
     var eventName:String = ""
@@ -188,6 +189,8 @@ class EditViewController: UIViewController, UITextFieldDelegate {
                         print("Event_name: ", self.editNameField.text!)
                         print("Lat: ", self.mLatitude)
                         print("Long: ", self.mLongitude)
+                        
+                        //NOT UPDATING USER ID BECUASE IT MUST BE CREATOR, CHECK SPECIAL DEATAIL VIEW
                         self.updateEvent(self.events.count, event_id: attempt!, event_name: self.editNameField.text!, event_date: self.editDateTime.date,event_lat: self.mLatitude, event_long: self.mLongitude)
                         dispatch_async(dispatch_get_main_queue()) {
                             self.navigationController?.popViewControllerAnimated(true)
@@ -229,7 +232,7 @@ class EditViewController: UIViewController, UITextFieldDelegate {
         let results = try managedContext.executeFetchRequest(fetchRequest)
         events = results as! [NSManagedObject]
         let eventUpdate = events[self.index]
-
+        
         eventUpdate.setValue(local_id, forKey:"local_id")
         eventUpdate.setValue(event_id, forKey: "event_id")
         eventUpdate.setValue(event_name, forKey: "event_name")

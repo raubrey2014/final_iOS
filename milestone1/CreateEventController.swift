@@ -65,7 +65,7 @@ class CreateEventController: UIViewController, UITextFieldDelegate {
         googleGet += (stateField.text!).stringByReplacingOccurrencesOfString(" ", withString: "+")
         
         googleGet += "&key=AIzaSyAUl2orBA0TOyKQ9g2e5DyeTQQ54Oxnnmc"
-        print(googleGet)
+//        print(googleGet)
         
         
         //TRYING GET
@@ -111,8 +111,8 @@ class CreateEventController: UIViewController, UITextFieldDelegate {
                     self.mLatitude = geometry["location"]!["lat"] as! Double
                     self.mLongitude = geometry["location"]!["lng"] as! Double
                     
-                    print("\n latitude: \(latitude)")
-                    print("longitude: \(longitude)")
+//                    print("\n latitude: \(latitude)")
+//                    print("longitude: \(longitude)")
                     
                     //**********************************************************************************************
                     //CREATE EVENT ENTRY WITH GPS INFORMATION
@@ -127,11 +127,11 @@ class CreateEventController: UIViewController, UITextFieldDelegate {
                     databaseGet += "\(dateString)/"
                     databaseGet += "\(self.mLatitude)/"
                     databaseGet += "\(self.mLongitude)"
-                    print(databaseGet)
+//                    print(databaseGet)
                     
                     //Replaces spaces and unacceptable characters for web request
                     let databaseGet2:String = databaseGet.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
-                    print(databaseGet2)
+//                    print(databaseGet2)
 
                     //TRYING GET
                     guard let url2 = NSURL(string: databaseGet2) else {
@@ -154,12 +154,12 @@ class CreateEventController: UIViewController, UITextFieldDelegate {
                             return
                         }
                         let dataString = NSString(data: data!, encoding: NSUTF8StringEncoding)
-                        print(dataString)
+//                        print(dataString)
                         let attempt = Int(dataString! as String)
-                        print("Event_id: ", attempt)
-                        print("Event_name: ", self.nameField.text!)
-                        print("Lat: ", self.mLatitude)
-                        print("Long: ", self.mLongitude)
+//                        print("Event_id: ", attempt)
+//                        print("Event_name: ", self.nameField.text!)
+//                        print("Lat: ", self.mLatitude)
+//                        print("Long: ", self.mLongitude)
                         self.saveEvent(self.events.count, event_id: attempt!, event_name: self.nameField.text!, event_date: self.dateField.date, event_lat: self.mLatitude, event_long: self.mLongitude)
                         dispatch_async(dispatch_get_main_queue()) {
                             // update some UI

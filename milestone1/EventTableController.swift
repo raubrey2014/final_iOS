@@ -15,6 +15,7 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
     
     @IBOutlet var eventTableView: UITableView!
     
+    var user_id = 0
     
     //FIELDS FOR GPS
     //MARK: FIELDS FOR GPS
@@ -28,7 +29,7 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-     
+        print("HERE IN EVENT_TABLE_CONTROLLER: \(self.user_id)")
         // Do any additional setup after loading the view.
         eventTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         eventTableView.reloadData()
@@ -103,7 +104,7 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
     
     //Events
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath:NSIndexPath){
-        print("Here is didselectrowatindexpath..\(indexPath.row)")
+//        print("Here is didselectrowatindexpath..\(indexPath.row)")
         
         performSegueWithIdentifier("SecondDetailViewController", sender: indexPath.row)
     }
@@ -112,10 +113,14 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
         if segue.identifier == "SecondDetailViewController"{
             print("preparing for detail segue")
             if let destinationVC = segue.destinationViewController as? SpecialDetailController{
+                print(" navigation problem possibly ")
+
                 if let senderInt = sender as? Int{
                     destinationVC.index = senderInt
+                    destinationVC.user_id = self.user_id
+                    print("TableViewController Prepare for Segue: user_id = \(self.user_id)")
 //                    reminderManager.currentlyEditing = senderInt
-                    print("sender Int = \(senderInt)")
+//                    print("sender Int = \(senderInt)")
                 }
                 
             }
@@ -125,11 +130,6 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
         }
     }
     
-    @IBAction func reload(sender: AnyObject) {
-        
-        print("Attempting reload on eventTableView..")
-        eventTableView.reloadData()
-    }
     
     
     
@@ -190,7 +190,7 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
     func createLocationManager(startImmediately startImmediately: Bool){
         locationManager = CLLocationManager()
         if let manager = locationManager{
-            print("Successfully created the location manager")
+//            print("Successfully created the location manager")
             manager.delegate = self
             if startImmediately{
                 manager.startUpdatingLocation()

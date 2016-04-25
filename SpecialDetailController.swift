@@ -12,6 +12,7 @@ import CoreLocation
 
 class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
     
+    var user_id:Int = 0
     var index:Int = 0
     var foreignIndex:Int = 0
     var cityField: String = ""
@@ -43,6 +44,7 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.successLabel.text = ""
+        print("Here in Special!: user_id = \(self.user_id)")
     }
     
     
@@ -50,6 +52,7 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
         if segue.identifier == "EditSegue"{
             print("preparing for edit segue")
             if let destinationVC = segue.destinationViewController as? EditViewController{
+                destinationVC.user_id = self.user_id
                 destinationVC.index = self.index
                 destinationVC.foreignIndex = self.foreignIndex
                 destinationVC.eventName = eventNameField.text!
@@ -89,7 +92,9 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
 //            print(events[index])
             let currentEvent = events[index]
             print(currentEvent.valueForKey("event_id")!)
-            
+            if (currentEvent.valueForKey("creator") as! Int) != user_id {
+                self.navigationItem.setRightBarButtonItem(UIBarButtonItem(title:"", style:.Plain, target:nil, action:nil), animated: true)
+            }
             //CHECK IF ATTENDED
             if (currentEvent.valueForKey("attended")) != nil{
                 print("value for key is not nil")
@@ -101,6 +106,7 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
                         attendButtonField.enabled = false
                         self.navigationItem.setRightBarButtonItem(UIBarButtonItem(title:"", style:.Plain, target:nil, action:nil), animated: true)
                     }
+                    
                     else{
                         print(b)
                     }
@@ -134,7 +140,7 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
         googleGet += String(tempLat) + ","
         googleGet += String(tempLong)
         googleGet += "&key=AIzaSyAUl2orBA0TOyKQ9g2e5DyeTQQ54Oxnnmc"
-        print(googleGet)
+//        print(googleGet)
         
         guard let url = NSURL(string: googleGet) else {
             print("Error: cannot create URL")
