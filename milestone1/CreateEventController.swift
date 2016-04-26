@@ -127,7 +127,8 @@ class CreateEventController: UIViewController, UITextFieldDelegate {
                     databaseGet += "\(self.nameField.text!)/"
                     databaseGet += "\(dateString)/"
                     databaseGet += "\(self.mLatitude)/"
-                    databaseGet += "\(self.mLongitude)"
+                    databaseGet += "\(self.mLongitude)/"
+                    databaseGet += "\(self.user_id)"
 //                    print(databaseGet)
                     
                     //Replaces spaces and unacceptable characters for web request

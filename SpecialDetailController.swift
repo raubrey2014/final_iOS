@@ -45,6 +45,9 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
         super.viewDidLoad()
         self.successLabel.text = ""
         print("Here in Special!: user_id = \(self.user_id)")
+        print("Here in Special!: index = \(self.index)")
+        
+        
     }
     
     
@@ -89,7 +92,6 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
             //GET RESULT
             let results = try managedContext.executeFetchRequest(fetchRequest)
             events = results as! [NSManagedObject]
-//            print(events[index])
             let currentEvent = events[index]
             print(currentEvent.valueForKey("event_id")!)
             print("THIS IS THE CURRENT CREATOR: \(currentEvent.valueForKey("creator")!)")
@@ -121,6 +123,7 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
                 
             }
             //ELSE
+            print("PLACEHOLDER")
             eventNameField.text = currentEvent.valueForKey("event_name") as! String
             let dateTime = currentEvent.valueForKey("date_time") as! NSDate
             

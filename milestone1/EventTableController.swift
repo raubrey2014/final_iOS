@@ -31,8 +31,27 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
         super.viewDidLoad()
         print("HERE IN EVENT_TABLE_CONTROLLER: \(self.user_id)")
         // Do any additional setup after loading the view.
+        //######################### DELETE OLD CORE DATA ################################
+        let appDel = UIApplication.sharedApplication().delegate as! AppDelegate
+        let context = appDel.managedObjectContext
+        let coord = appDel.persistentStoreCoordinator
+        
+        let fetchRequest = NSFetchRequest(entityName: "Your_events")
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        do {
+            try coord.executeRequest(deleteRequest, withContext: context)
+        } catch let error as NSError {
+            print("DELETING CORE DATA FAILED")
+            debugPrint(error)
+        }
+        
+        //######################### DELETE OLD CORE DATA ################################
+
+        queryForCurrentEvents()
         eventTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         eventTableView.reloadData()
+        
 
     }
 
@@ -54,7 +73,7 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+//        queryForCurrentEvents()
         //1
         let appDelegate =
         UIApplication.sharedApplication().delegate as! AppDelegate
@@ -78,6 +97,108 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
     }
     
     
+    //MARK: OUR PULL FROM DB FOR INTIALIAL DATA
+    func queryForCurrentEvents(){
+        //Take the passed in proposed new username and password
+        //Check is user exists on server and return id of user if valid new user
+        var databaseGet = "http://plato.cs.virginia.edu/~rma7qb/flightservice/events"
+        
+        //Replaces spaces and unacceptable characters for web request
+        let databaseGet2:String = databaseGet.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+        //        print(databaseGet2)
+        
+        //TRYING GET
+        guard let url2 = NSURL(string: databaseGet2) else {
+            print("Error: cannot create URL")
+            return
+        }
+        let urlRequest2 = NSURLRequest(URL: url2)
+        let config2 = NSURLSessionConfiguration.defaultSessionConfiguration()
+        let session2 = NSURLSession(configuration: config2)
+        
+        let task = session2.dataTaskWithRequest(urlRequest2, completionHandler: { (data, response, error) in
+            // do stuff with response, data & error here
+            guard let responseData = data else {
+                print("Error: did not receive data")
+                return
+            }
+            guard error == nil else {
+                print("error using POST for our web service!!!\n")
+                print(error)
+                return
+            }
+            
+            do {
+                let json = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! NSArray
+                
+                
+                //1 get AppDelegate and ManagedObjectContext
+                let appDelegate =
+                    UIApplication.sharedApplication().delegate as! AppDelegate
+                
+                let managedContext = appDelegate.managedObjectContext
+                
+                //2 Find the relevant entity
+                let entity =  NSEntityDescription.entityForName("Your_events",
+                    inManagedObjectContext:managedContext)
+                
+                var count:Int = 0
+                for dataObject: AnyObject in json{
+                    if let jsonData = dataObject as? NSDictionary{
+                        //Do stuff
+                        print(jsonData["event_name"])
+                        
+                        //ALL IN LOOP ######################################################################
+                        let your_event = NSManagedObject(entity: entity!,
+                            insertIntoManagedObjectContext: managedContext)
+                        
+                        //3 Set attribute
+                        print("RIGHT BEFORE SETTING IT: \(self.user_id)")
+                        
+                        print("HERE IS THE CREATOR: \( Int((jsonData["creator_id"] as? String)!)! )")
+                        your_event.setValue(Int((jsonData["creator_id"] as? String)!)!, forKey: "creator")
+                        your_event.setValue(count, forKey:"local_id")
+                        your_event.setValue(Int((jsonData["event_id"] as? String)!)!, forKey: "event_id")
+                        your_event.setValue(jsonData["event_name"], forKey: "event_name")
+                        
+                        let dateFormatter = NSDateFormatter()
+                        dateFormatter.dateFormat = "dd-MM-YYYY:hh:mm"
+                        let dateString = (jsonData["event_date"] as? String)!
+                        let dateValue = dateFormatter.dateFromString((dateString as? String)!)
+                        your_event.setValue(dateValue, forKey: "date_time")
+                        
+                        your_event.setValue(Double((jsonData["event_lat"] as? String)!)!, forKey: "lat")
+                        your_event.setValue(Double((jsonData["event_long"] as? String)!)!, forKey: "long")
+                        your_event.setValue(false, forKey: "attended")
+                        
+                        //4 Save query
+                        do {
+                            try managedContext.save()
+                            //5
+                            self.events.append(your_event)
+                            print("COUNT \(count)")
+                            count += 1
+                            
+                        } catch let error as NSError  {
+                            print("Could not save \(error), \(error.userInfo)")
+                        }
+                        //######################################################################################
+                    }
+                }
+                
+            } catch {
+                print("error converting JSON")
+            }
+            dispatch_async(dispatch_get_main_queue()) {
+                // update some UI
+                self.eventTableView.reloadData()
+            }
+            
+        })
+        task.resume()
+    }
+    
+    
     // MARK: UITableViewDataSource
     override func tableView(tableView: UITableView,
         numberOfRowsInSection section: Int) -> Int {
@@ -90,16 +211,28 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
         cellForRowAtIndexPath
         indexPath: NSIndexPath) -> UITableViewCell {
             
-            let cell =
-            tableView.dequeueReusableCellWithIdentifier("Cell")
-            
+//            let cell = tableView.dequeueReusableCellWithIdentifier("Cell")
+            let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "Default")
+
             //Still stored NSManagedObject in local var
             let event = events[indexPath.row]
             
             //Accessing name field via valueForKey
-            cell!.textLabel!.text = event.valueForKey("event_name") as? String
+            cell.textLabel!.text = event.valueForKey("event_name") as? String
+        
+            let attended = event.valueForKey("attended") as? Bool
+        if attended == true {
+            cell.detailTextLabel!.text = "Attended!"
+            cell.detailTextLabel!.textColor = UIColor.greenColor()
+        }
+        else {
+            cell.detailTextLabel!.text = "Not Attended."
+            cell.detailTextLabel!.textColor = UIColor.redColor()
+        }
+        
+
 //            cell!.textLabel!.text = "Example"
-            return cell!
+            return cell
     }
     
     //Events
