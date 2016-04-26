@@ -96,7 +96,7 @@
                     <navigationItem key="navigationItem" title="Your Events" id="1Rp-sj-wbw">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Ge3-dF-zdt">
                             <connections>
-                                <segue destination="0qx-UM-RMh" kind="show" id="fwq-Wd-e73"/>
+                                <segue destination="0qx-UM-RMh" kind="show" identifier="CreateEventSegue" id="fwq-Wd-e73"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

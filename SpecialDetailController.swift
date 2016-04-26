@@ -92,7 +92,14 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
 //            print(events[index])
             let currentEvent = events[index]
             print(currentEvent.valueForKey("event_id")!)
+            print("THIS IS THE CURRENT CREATOR: \(currentEvent.valueForKey("creator")!)")
+            
             if (currentEvent.valueForKey("creator") as! Int) != user_id {
+                print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                print(currentEvent.valueForKey("creator")!)
+                print(user_id)
+                
+                print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
                 self.navigationItem.setRightBarButtonItem(UIBarButtonItem(title:"", style:.Plain, target:nil, action:nil), animated: true)
             }
             //CHECK IF ATTENDED

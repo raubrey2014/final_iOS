@@ -26,6 +26,7 @@ class CreateEventController: UIViewController, UITextFieldDelegate {
     var mLongitude: Double = 0.0
     var mLatitude: Double = 0.0
     var events = [NSManagedObject]()
+    var user_id:Int = 0
     
     
     override func viewDidLoad() {
@@ -160,7 +161,7 @@ class CreateEventController: UIViewController, UITextFieldDelegate {
 //                        print("Event_name: ", self.nameField.text!)
 //                        print("Lat: ", self.mLatitude)
 //                        print("Long: ", self.mLongitude)
-                        self.saveEvent(self.events.count, event_id: attempt!, event_name: self.nameField.text!, event_date: self.dateField.date, event_lat: self.mLatitude, event_long: self.mLongitude)
+                        self.saveEvent(self.user_id, local_id: self.events.count, event_id: attempt!, event_name: self.nameField.text!, event_date: self.dateField.date, event_lat: self.mLatitude, event_long: self.mLongitude)
                         dispatch_async(dispatch_get_main_queue()) {
                             // update some UI
                             self.navigationController?.popViewControllerAnimated(true)
@@ -179,7 +180,7 @@ class CreateEventController: UIViewController, UITextFieldDelegate {
 
     }
     
-    func saveEvent(local_id:Int, event_id: Int, event_name: String, event_date: NSDate, event_lat: Double, event_long: Double) {
+    func saveEvent(user_id:Int, local_id:Int, event_id: Int, event_name: String, event_date: NSDate, event_lat: Double, event_long: Double) {
         //1 get AppDelegate and ManagedObjectContext
         let appDelegate =
         UIApplication.sharedApplication().delegate as! AppDelegate
@@ -194,6 +195,8 @@ class CreateEventController: UIViewController, UITextFieldDelegate {
             insertIntoManagedObjectContext: managedContext)
         
         //3 Set attribute
+        print("RIGHT BEFORE SETTING IT: \(user_id)")
+        your_event.setValue(user_id, forKey: "creator")
         your_event.setValue(local_id, forKey:"local_id")
         your_event.setValue(event_id, forKey: "event_id")
         your_event.setValue(event_name, forKey: "event_name")

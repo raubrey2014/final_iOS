@@ -113,21 +113,22 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
         if segue.identifier == "SecondDetailViewController"{
             print("preparing for detail segue")
             if let destinationVC = segue.destinationViewController as? SpecialDetailController{
-                print(" navigation problem possibly ")
-
                 if let senderInt = sender as? Int{
                     destinationVC.index = senderInt
                     destinationVC.user_id = self.user_id
                     print("TableViewController Prepare for Segue: user_id = \(self.user_id)")
-//                    reminderManager.currentlyEditing = senderInt
-//                    print("sender Int = \(senderInt)")
                 }
                 
             }
-            
-            
-            
         }
+        else if segue.identifier == "CreateEventSegue"{
+            print("preparing for CreateEventSegue segue")
+            if let destinationVC = segue.destinationViewController as? CreateEventController{
+                destinationVC.user_id = self.user_id
+                print("CreateEventSegue Prepare for Segue: user_id = \(self.user_id)")
+            }
+        }
+        
     }
     
     
