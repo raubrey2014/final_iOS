@@ -6,67 +6,6 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
-            <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="milestone1" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="95y-mK-I2i">
-                                <rect key="frame" x="181" y="252" width="239" height="83"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xOz-eU-gRf">
-                                        <rect key="frame" x="0.0" y="0.0" width="239" height="41"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                        <state key="normal" title="Click for your address!"/>
-                                        <connections>
-                                            <action selector="returnAddress:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Qsr-gY-S8s"/>
-                                        </connections>
-                                    </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uGE-GH-ww8">
-                                        <rect key="frame" x="99" y="41" width="42" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NLe-yA-S1Z">
-                                        <rect key="frame" x="99" y="62" width="42" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                            </stackView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="95y-mK-I2i" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="LZB-7q-FER"/>
-                            <constraint firstItem="95y-mK-I2i" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="hrR-3w-QXc"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="uu8-6M-z1g">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="7Ku-kZ-Ajf">
-                            <connections>
-                                <segue destination="0qx-UM-RMh" kind="show" id="sMU-ZK-cev"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="addressButton" destination="xOz-eU-gRf" id="8ZV-y6-w4V"/>
-                        <outlet property="addressLabel" destination="uGE-GH-ww8" id="qDO-YD-CA2"/>
-                        <outlet property="addressLabel2" destination="NLe-yA-S1Z" id="9c0-Uz-yGX"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1141" y="-463"/>
-        </scene>
         <!--Your Events-->
         <scene sceneID="Jed-pI-xVB">
             <objects>
@@ -94,6 +33,12 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Your Events" id="1Rp-sj-wbw">
+                        <barButtonItem key="leftBarButtonItem" title="Log Out" id="Prf-sp-8av">
+                            <connections>
+                                <action selector="LogOutButton:" destination="vNo-en-0Qy" id="nky-ti-xvZ"/>
+                                <segue destination="qJD-GC-jJs" kind="showDetail" id="aPy-32-nca"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Ge3-dF-zdt">
                             <connections>
                                 <segue destination="0qx-UM-RMh" kind="show" identifier="CreateEventSegue" id="fwq-Wd-e73"/>
@@ -342,24 +287,6 @@
             <point key="canvasLocation" x="1983" y="-609"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="8WP-Bw-nHT">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="pI2-3X-xGX" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="9Uv-6H-8Ln">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="d8x-Jf-Ybr"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Mbu-qu-Lky" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="420" y="-463"/>
-        </scene>
-        <!--Navigation Controller-->
         <scene sceneID="E54-nW-mnn">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="MjT-Q0-i7J" sceneMemberID="viewController">
@@ -375,7 +302,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VhN-LD-PeS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="420" y="210"/>
+            <point key="canvasLocation" x="428" y="218"/>
         </scene>
         <!--Sign In View Controller-->
         <scene sceneID="FZS-6n-i9R">
@@ -491,7 +418,4 @@
             <point key="canvasLocation" x="-286" y="210"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="fwq-Wd-e73"/>
-    </inferredMetricsTieBreakers>
 </document>

@@ -15,6 +15,9 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
     
     @IBOutlet var eventTableView: UITableView!
     
+    @IBAction func LogOutButton(sender: AnyObject) {
+        self.navigationController?.popViewControllerAnimated(true)
+    }
     var user_id = 0
     
     //FIELDS FOR GPS
