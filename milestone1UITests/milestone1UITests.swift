@@ -28,7 +28,16 @@ class milestone1UITests: XCTestCase {
         super.tearDown()
     }
     
+    
     func testExample() {
+        
+        let app = XCUIApplication()
+        let yourEventsButton = app.navigationBars["Event Details"].buttons["Your Events"]
+        yourEventsButton.tap()
+        app.tables.staticTexts["Maore brew ions"].tap()
+        app.buttons["Attend via CloudReach"].tap()
+        yourEventsButton.tap()
+        
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
