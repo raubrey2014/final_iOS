@@ -121,7 +121,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Qca-bx-zhN">
-                                <rect key="frame" x="20" y="174" width="560" height="133"/>
+                                <rect key="frame" x="20" y="174" width="560" height="153"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="LJl-PB-Gg5">
                                         <rect key="frame" x="0.0" y="0.0" width="560" height="21"/>
@@ -160,6 +160,12 @@
                                             <action selector="checkRadius:" destination="6pa-hx-OCC" eventType="touchUpInside" id="OUJ-uP-0de"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nX3-HQ-fhP">
+                                        <rect key="frame" x="0.0" y="133" width="560" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                             </stackView>
                         </subviews>
@@ -181,6 +187,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="attendButtonField" destination="6Tp-LW-FCq" id="OY4-4H-faN"/>
+                        <outlet property="attendanceLabel" destination="nX3-HQ-fhP" id="8uY-bH-aMN"/>
                         <outlet property="eventAddress1" destination="dEy-l0-GZ1" id="zGr-qb-Jkn"/>
                         <outlet property="eventAddress2" destination="y9Y-fy-rRS" id="4ah-aL-14Q"/>
                         <outlet property="eventDateTimeField" destination="Fg7-6L-8m2" id="tGd-ni-OiH"/>

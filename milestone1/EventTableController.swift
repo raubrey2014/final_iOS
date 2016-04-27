@@ -143,7 +143,13 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
                     inManagedObjectContext:managedContext)
                 
                 var count:Int = 0
-                for dataObject: AnyObject in json{
+                
+                
+                let listOfEvents:NSArray
+                listOfEvents = json[0] as! NSArray
+                
+                
+                for dataObject: AnyObject in listOfEvents{
                     if let jsonData = dataObject as? NSDictionary{
                         //Do stuff
                         print(jsonData["event_name"])
@@ -185,6 +191,20 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
                         //######################################################################################
                     }
                 }
+                
+                let listOfAttended:NSArray
+                do {
+                    listOfAttended = (json[1] as? NSArray)!
+                    for dataObject: AnyObject in listOfAttended{
+                        if let jsonData = dataObject as? NSDictionary{
+                            print(jsonData["member_id"])
+                        }
+                    }
+                    
+                } catch {
+                    print("No second element in json object, error parsing listOfAttending!")
+                }
+                
                 
             } catch {
                 print("error converting JSON")

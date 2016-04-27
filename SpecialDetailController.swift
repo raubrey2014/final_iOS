@@ -11,14 +11,16 @@ import CoreData
 import CoreLocation
 
 class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
-    
+    //These are set in viewWillAppear, because that is wwhere we read CoreData
+    var event_id:Int = 0
     var user_id:Int = 0
     var index:Int = 0
     var foreignIndex:Int = 0
     var cityField: String = ""
     var stateField: String = ""
-    var events = [NSManagedObject]()
     var tempDate = NSDate()
+
+    var events = [NSManagedObject]()
     @IBOutlet weak var eventNameField: UILabel!
     
     @IBOutlet weak var eventDateTimeField: UILabel!
@@ -31,6 +33,7 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
     
     @IBOutlet weak var successLabel: UILabel!
     
+    @IBOutlet weak var attendanceLabel: UILabel!
     
     
     //MARK: FIELDS FOR GPS
@@ -44,6 +47,7 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.successLabel.text = ""
+        self.attendanceLabel.text = ""
         print("Here in Special!: user_id = \(self.user_id)")
         print("Here in Special!: index = \(self.index)")
         
@@ -93,7 +97,10 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
             let results = try managedContext.executeFetchRequest(fetchRequest)
             events = results as! [NSManagedObject]
             let currentEvent = events[index]
+            
             print(currentEvent.valueForKey("event_id")!)
+            event_id = currentEvent.valueForKey("event_id") as! Int
+            
             print("THIS IS THE CURRENT CREATOR: \(currentEvent.valueForKey("creator")!)")
             
             if (currentEvent.valueForKey("creator") as! Int) != user_id {
@@ -150,7 +157,6 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
         googleGet += String(tempLat) + ","
         googleGet += String(tempLong)
         googleGet += "&key=AIzaSyAUl2orBA0TOyKQ9g2e5DyeTQQ54Oxnnmc"
-//        print(googleGet)
         
         guard let url = NSURL(string: googleGet) else {
             print("Error: cannot create URL")
@@ -164,7 +170,6 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
         
         //################################## MAKE REQUEST ##########################################
         let task = session.dataTaskWithRequest(urlRequest, completionHandler: { (data, response, error) in
-            //                // do stuff with response, data & error here
             guard let responseData = data else {
                 print("Error: did not receive data")
                 return
@@ -174,7 +179,6 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
                 print(error)
                 return
             }
-            //                // parse the result as JSON, since that's what the API provides
             let post: NSDictionary
             do {
                 post = try NSJSONSerialization.JSONObjectWithData(responseData,
@@ -183,29 +187,15 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
                 print("error trying to convert data to JSON")
                 return
             }
-            //                // now we have the post, let's just print it to prove we can access it
-            //                //             print("The post is: " + post.description)
-            //
-            //                // the post object is a dictionary
-            //                // so we just access the title using the "title" key
-            //                // so check for a title and print it if we have one
-            //                //            print(post.description)
-            //                print(post.allKeys)
-            //                //            print(post["results"])
-            //                print((post["results"]).dynamicType)
-            //                print((post["status"]).dynamicType)
-            //
+         
             let json = try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
             if let result = json["results"] as? NSArray {
-//                print(result)
                 if let address = result[0]["address_components"] as? NSArray {
                     let number = address[0]["short_name"] as! String
                     let street = address[1]["short_name"] as! String
                     let city = address[2]["short_name"] as! String
                     let state = address[4]["short_name"] as! String
                     let zip = address[6]["short_name"] as! String
-                    print("\n\(number) \(street), \(city), \(state) \(zip)")
-                    //                    self.addressLabel.text = "\(number) \(street), \(city), \(state) \(zip)"
                     self.cityField = "\(city)"
                     self.stateField = "\(state)"
                     
@@ -235,13 +225,9 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
             //handle error here
             return
         }
-        
         let newLocation = locations[0]
-        
-        
         mLongitude = newLocation.coordinate.longitude
         mLatitude = newLocation.coordinate.latitude
-       
         
     }
     
@@ -345,13 +331,10 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
         databaseGet += "\(self.foreignIndex)/"
         databaseGet += "\(self.mLatitude)/"
         databaseGet += "\(self.mLongitude)"
-//        print(databaseGet)
         
         //Replaces spaces and unacceptable characters for web request
         let databaseGet2:String = databaseGet.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
-//        print(databaseGet2)
-        
-        //TRYING GET
+
         guard let url2 = NSURL(string: databaseGet2) else {
             print("Error: cannot create URL")
             return
@@ -372,15 +355,62 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
                 return
             }
             let dataString = NSString(data: data!, encoding: NSUTF8StringEncoding)
-            print(dataString!)
+            //SUCCESFULLY in range
             if dataString! == "success" {
                 dispatch_async(dispatch_get_main_queue()) {
                     self.successLabel.text = "You have attended!"
                     self.successLabel.textColor = UIColor.greenColor()
                     
+                    //SUCCESSFULLY ATTENDED
+                    //################################ ADD TO EVENT_MEMBER #############################
+                    var databaseGet = "http://plato.cs.virginia.edu/~rma7qb/flightservice/attend/"
+                    databaseGet += "\(self.user_id)/"
+                    databaseGet += "\(self.event_id)"
+                    
+                    //Replaces spaces and unacceptable characters for web request
+                    let databaseGet2:String = databaseGet.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+                    //        print(databaseGet2)
+                    
+                    //TRYING GET
+                    guard let url2 = NSURL(string: databaseGet2) else {
+                        print("Error: cannot create URL")
+                        return
+                    }
+                    let urlRequest2 = NSURLRequest(URL: url2)
+                    let config2 = NSURLSessionConfiguration.defaultSessionConfiguration()
+                    let session2 = NSURLSession(configuration: config2)
+                    
+                    let task2 = session2.dataTaskWithRequest(urlRequest2, completionHandler: { (data, response, error) in
+                        // do stuff with response, data & error here
+                        guard let responseData = data else {
+                            print("Error: did not receive data")
+                            return
+                        }
+                        guard error == nil else {
+                            print("error using POST for our web service!!!\n")
+                            print(error)
+                            return
+                        }
+                        
+                        let dataString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                        let attempt = Int(dataString! as String)
+                        
+
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.attendanceLabel.text = "You have now joined " + (dataString! as String) + " other(s)!"
+                            
+                        }
+                    })
+                    
+                    task2.resume()
+                    //################################ ADD TO EVENT_MEMBER #############################
+                    
+                    //SAVES TO LOCAL DATA
                     self.updateEvent()
                 }
             }
+                
+            //NOT in range
             else {
                 dispatch_async(dispatch_get_main_queue()) {
                     self.successLabel.text = "You are not in range!"
@@ -389,11 +419,6 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
                     
                 }
             }
-//            self.saveEvent(self.events.count, event_id: attempt!, event_name: self.nameField.text!, event_date: self.dateField.date, event_lat: self.mLatitude, event_long: self.mLongitude)
-//            dispatch_async(dispatch_get_main_queue()) {
-//                // update some UI
-//                self.navigationController?.popViewControllerAnimated(true)
-//            }
             
         })
         task2.resume()
