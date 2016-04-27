@@ -101,7 +101,8 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
     func queryForCurrentEvents(){
         //Take the passed in proposed new username and password
         //Check is user exists on server and return id of user if valid new user
-        var databaseGet = "http://plato.cs.virginia.edu/~rma7qb/flightservice/events"
+        var databaseGet = "http://plato.cs.virginia.edu/~rma7qb/flightservice/events/"
+        databaseGet += "\(user_id)"
         
         //Replaces spaces and unacceptable characters for web request
         let databaseGet2:String = databaseGet.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
