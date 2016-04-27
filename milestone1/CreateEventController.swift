@@ -21,7 +21,6 @@ class CreateEventController: UIViewController, UITextFieldDelegate {
     
     
     
-    
     //MARK: GLOBALS
     var mLongitude: Double = 0.0
     var mLatitude: Double = 0.0
@@ -31,6 +30,11 @@ class CreateEventController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        nameField.delegate = self
+        addressField.delegate = self
+        cityField.delegate = self
+        stateField.delegate = self
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "textChanged:", name: UITextFieldTextDidChangeNotification, object: nil)
         createButton.enabled = false
         dateField.minimumDate = NSDate()
@@ -47,15 +51,15 @@ class CreateEventController: UIViewController, UITextFieldDelegate {
     }
     
     //MARK: UITextFieldDelegate
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        //hide keyboard
+    func textFieldShouldReturn(textField: UITextField) -> Bool // called when 'return' key pressed. return false to ignore.
+    {
         textField.resignFirstResponder()
         return true
     }
-    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         self.view.endEditing(true)
     }
+    
     
     //MARK: ACTIONS
     @IBAction func createEvent(sender: AnyObject) {

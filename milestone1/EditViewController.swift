@@ -40,12 +40,17 @@ class EditViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        editNameField.delegate = self
+        editAddressField.delegate = self
+        editCityField.delegate = self
+        editStateField.delegate = self
+        
         
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "MMM dd, YYYY hh:mm a"
         let dateString = dateFormatter.stringFromDate(dateTime)
         print(eventName + "," + address + "," + city + "," + state + "," + dateString)
-
+        
         editNameField.text = eventName
         editAddressField.text = address
         editCityField.text = city

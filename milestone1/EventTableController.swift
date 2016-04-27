@@ -103,8 +103,7 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
         //Check is user exists on server and return id of user if valid new user
         var databaseGet = "http://plato.cs.virginia.edu/~rma7qb/flightservice/events/"
         databaseGet += "\(user_id)"
-        print(databaseGet)
-        //Replaces spaces and unacceptable characters for web request
+        
         let databaseGet2:String = databaseGet.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
         //        print(databaseGet2)
         
@@ -293,6 +292,11 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
                 if let senderInt = sender as? Int{
                     destinationVC.index = senderInt
                     destinationVC.user_id = self.user_id
+                    let tmpEvent = events[senderInt]
+                    let tmpBool = tmpEvent.valueForKey("attended") as? Bool
+                    destinationVC.attended = tmpBool!
+                    
+                    
                     print("TableViewController Prepare for Segue: user_id = \(self.user_id)")
                 }
                 

@@ -142,7 +142,7 @@ class SignInViewController: UIViewController {
                 else {
                     dispatch_async(dispatch_get_main_queue()) {
                         // update some UI
-                        self.incorrectLabel.text = "Account Created! Go ahead and sign in!"
+                        self.incorrectLabel.text = "Account Created!"
                         self.incorrectLabel.textColor = UIColor.greenColor()
                     }
                     
