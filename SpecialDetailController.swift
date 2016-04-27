@@ -42,7 +42,15 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
     
     var locationManager: CLLocationManager?
     
+    override func canBecomeFirstResponder() -> Bool {
+        return true
+    }
     
+    override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent?) {
+        if motion == .MotionShake {
+            checkRadius(self)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
