@@ -50,6 +50,48 @@ class SpecialDetailController: UIViewController, CLLocationManagerDelegate {
         self.attendanceLabel.text = ""
         print("Here in Special!: user_id = \(self.user_id)")
         print("Here in Special!: index = \(self.index)")
+        //SUCCESSFULLY ATTENDED
+        //################################ ADD TO EVENT_MEMBER #############################
+        var databaseGet = "http://plato.cs.virginia.edu/~rma7qb/flightservice/getNumbersForEvent/"
+        databaseGet += "\(self.event_id)/"
+        
+        //Replaces spaces and unacceptable characters for web request
+        let databaseGet2:String = databaseGet.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+        //        print(databaseGet2)
+        
+        //TRYING GET
+        guard let url2 = NSURL(string: databaseGet2) else {
+            print("Error: cannot create URL")
+            return
+        }
+        let urlRequest2 = NSURLRequest(URL: url2)
+        let config2 = NSURLSessionConfiguration.defaultSessionConfiguration()
+        let session2 = NSURLSession(configuration: config2)
+        
+        let task2 = session2.dataTaskWithRequest(urlRequest2, completionHandler: { (data, response, error) in
+            // do stuff with response, data & error here
+            guard let responseData = data else {
+                print("Error: did not receive data")
+                return
+            }
+            guard error == nil else {
+                print("error using POST for our web service!!!\n")
+                print(error)
+                return
+            }
+            
+            let dataString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+            let attempt = Int(dataString! as String)
+            
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                self.attendanceLabel.text = "Currently " + (dataString! as String) + " attending!"
+                
+            }
+        })
+        
+        task2.resume()
+        //################################ ADD TO EVENT_MEMBER #############################
         
         
     }

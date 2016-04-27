@@ -101,8 +101,9 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
     func queryForCurrentEvents(){
         //Take the passed in proposed new username and password
         //Check is user exists on server and return id of user if valid new user
-        var databaseGet = "http://plato.cs.virginia.edu/~rma7qb/flightservice/events"
-        
+        var databaseGet = "http://plato.cs.virginia.edu/~rma7qb/flightservice/events/"
+        databaseGet += "\(user_id)"
+        print(databaseGet)
         //Replaces spaces and unacceptable characters for web request
         let databaseGet2:String = databaseGet.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
         //        print(databaseGet2)
@@ -151,8 +152,9 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
                 
                 for dataObject: AnyObject in listOfEvents{
                     if let jsonData = dataObject as? NSDictionary{
+                        let currentEventId = Int((jsonData["event_id"] as? String)!)!
                         //Do stuff
-                        print(jsonData["event_name"])
+                        print((jsonData["event_name"] as? String)!)
                         
                         //ALL IN LOOP ######################################################################
                         let your_event = NSManagedObject(entity: entity!,
@@ -175,7 +177,40 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
                         
                         your_event.setValue(Double((jsonData["event_lat"] as? String)!)!, forKey: "lat")
                         your_event.setValue(Double((jsonData["event_long"] as? String)!)!, forKey: "long")
-                        your_event.setValue(false, forKey: "attended")
+                        
+                        
+                        //TRYING TO GET ATTEND VALUES
+                        let listOfAttended:NSArray
+                        //THE VALUE TO BE ASSIGNED TO ATTENDED
+                        var attendedOrNot:Bool = false
+                        do {
+                            listOfAttended = (json[1] as? NSArray)!
+                            for dataObject: AnyObject in listOfAttended{
+                                if let jsonData = dataObject as? NSDictionary{
+                                    if (Int((jsonData["member_id"] as? String)!)) != nil {
+                                        let receivedId = (Int((jsonData["member_id"] as? String)!))
+                                        if receivedId != self.user_id {
+                                            print("Got something that was not of this USER")
+                                        }
+                                        else{
+                                            if let receivedEventId = Int((jsonData["event_id"] as? String)!) {
+                                                if receivedEventId == currentEventId {
+                                                    attendedOrNot = true
+                                                }
+                                            }
+                                        }
+                                    }
+                                    print("This is the member_id: " + (jsonData["member_id"] as? String)!)
+                                    
+                                }
+                            }
+                            your_event.setValue(attendedOrNot, forKey: "attended")
+
+                        } catch {
+                            print("No second element in json object, error parsing listOfAttending!")
+                            your_event.setValue(false, forKey: "attended")
+
+                        }
                         
                         //4 Save query
                         do {
@@ -192,18 +227,7 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
                     }
                 }
                 
-                let listOfAttended:NSArray
-                do {
-                    listOfAttended = (json[1] as? NSArray)!
-                    for dataObject: AnyObject in listOfAttended{
-                        if let jsonData = dataObject as? NSDictionary{
-                            print(jsonData["member_id"])
-                        }
-                    }
-                    
-                } catch {
-                    print("No second element in json object, error parsing listOfAttending!")
-                }
+                
                 
                 
             } catch {
