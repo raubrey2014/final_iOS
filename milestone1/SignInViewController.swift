@@ -9,7 +9,7 @@
 import UIKit
 
 
-class SignInViewController: UIViewController {
+class SignInViewController: UIViewController, UITextFieldDelegate {
     // MARK: Constants
     let LoginToList = "LoginToList"
     
@@ -26,9 +26,22 @@ class SignInViewController: UIViewController {
     // MARK: UIViewController Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-        
+        textFieldLoginEmail.delegate = self
+        textFieldLoginPassword.delegate = self
+      
     }
+    
+    //MARK: UITextFieldDelegate
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        //hide keyboard
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 //        print("HERE IN PREPARE>>>")
@@ -38,9 +51,6 @@ class SignInViewController: UIViewController {
                 print("LOGINLISTSEQUE: \(self.user_id)")
                 destinationVC.user_id = self.user_id
             }
-            
-            
-            
         }
     }
     
@@ -135,7 +145,7 @@ class SignInViewController: UIViewController {
                     print("NO! This username is already in use!")
                     dispatch_async(dispatch_get_main_queue()) {
                         // update some UI
-                        self.incorrectLabel.text = "USERNAME ALREADY USED TRY AGAIN"
+                        self.incorrectLabel.text = "Duplicate Username."
                         self.incorrectLabel.textColor = UIColor.redColor()
                     }
                 }
