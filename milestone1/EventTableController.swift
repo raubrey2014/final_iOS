@@ -156,16 +156,16 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
                     if let jsonData = dataObject as? NSDictionary{
                         let currentEventId = Int((jsonData["event_id"] as? String)!)!
                         //Do stuff
-                        print((jsonData["event_name"] as? String)!)
+//                        print((jsonData["event_name"] as? String)!)
                         
                         //ALL IN LOOP ######################################################################
                         let your_event = NSManagedObject(entity: entity!,
                             insertIntoManagedObjectContext: managedContext)
                         
                         //3 Set attribute
-                        print("RIGHT BEFORE SETTING IT: \(self.user_id)")
+//                        print("RIGHT BEFORE SETTING IT: \(self.user_id)")
                         
-                        print("HERE IS THE CREATOR: \( Int((jsonData["creator_id"] as? String)!)! )")
+//                        print("HERE IS THE CREATOR: \( Int((jsonData["creator_id"] as? String)!)! )")
                         your_event.setValue(Int((jsonData["creator_id"] as? String)!)!, forKey: "creator")
                         your_event.setValue(count, forKey:"local_id")
                         your_event.setValue(Int((jsonData["event_id"] as? String)!)!, forKey: "event_id")
@@ -202,7 +202,7 @@ class EventTableController: UITableViewController, CLLocationManagerDelegate {
                                             }
                                         }
                                     }
-                                    print("This is the member_id: " + (jsonData["member_id"] as? String)!)
+//                                    print("This is the member_id: " + (jsonData["member_id"] as? String)!)
                                     
                                 }
                             }

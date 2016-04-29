@@ -95,6 +95,9 @@ class CreateEventController: UIViewController, UITextFieldDelegate {
                 print(error)
                 return
             }
+            if data == nil {
+                print("##########################################ERROR")
+            }
             // parse the result as JSON, since that's what the API provides
             let post: NSDictionary
             do {
